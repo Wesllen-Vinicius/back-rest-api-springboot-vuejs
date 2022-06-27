@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
   private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
   @Override
-  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+  public void commence(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull AuthenticationException authException)
       throws IOException, ServletException {
     logger.error("Unauthorized error: {}", authException.getMessage());
 
@@ -33,7 +34,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     final Map<String, Object> body = new HashMap<>();
     body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
     body.put("error", "Unauthorized");
-    body.put("message", authException.getMessage());
+    body.put("message", "Unauthorized error: Bad credentials");
     body.put("path", request.getServletPath());
 
     final ObjectMapper mapper = new ObjectMapper();

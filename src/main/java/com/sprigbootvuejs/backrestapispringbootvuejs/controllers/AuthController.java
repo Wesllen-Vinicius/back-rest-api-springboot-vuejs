@@ -10,6 +10,10 @@ import javax.validation.Valid;
 import com.sprigbootvuejs.backrestapispringbootvuejs.models.ERole;
 import com.sprigbootvuejs.backrestapispringbootvuejs.models.Role;
 import com.sprigbootvuejs.backrestapispringbootvuejs.models.User;
+import com.sprigbootvuejs.backrestapispringbootvuejs.payload.request.LoginRequest;
+import com.sprigbootvuejs.backrestapispringbootvuejs.payload.request.SignupRequest;
+import com.sprigbootvuejs.backrestapispringbootvuejs.payload.response.JwtResponse;
+import com.sprigbootvuejs.backrestapispringbootvuejs.payload.response.MessageResponse;
 import com.sprigbootvuejs.backrestapispringbootvuejs.repository.RoleRepository;
 import com.sprigbootvuejs.backrestapispringbootvuejs.repository.UserRepository;
 import com.sprigbootvuejs.backrestapispringbootvuejs.security.jwt.JwtUtils;
@@ -26,13 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
-import com.bezkoder.spring.security.postgresql.payload.request.LoginRequest;
-import com.bezkoder.spring.security.postgresql.payload.request.SignupRequest;
-import com.bezkoder.spring.security.postgresql.payload.response.JwtResponse;
-import com.bezkoder.spring.security.postgresql.payload.response.MessageResponse;
-
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -68,7 +65,7 @@ public class AuthController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt, 
+		return ResponseEntity.ok(new JwtResponse(jwt,
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
@@ -108,13 +105,6 @@ public class AuthController {
 					Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adminRole);
-
-					break;
-				case "mod":
-					Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
-
 					break;
 				default:
 					Role userRole = roleRepository.findByName(ERole.ROLE_USER)

@@ -1,4 +1,4 @@
-package com.bezkoder.spring.security.postgresql.payload.response;
+package com.sprigbootvuejs.backrestapispringbootvuejs.payload.response;
 
 import java.util.List;
 
